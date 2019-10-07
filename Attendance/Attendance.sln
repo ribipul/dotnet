@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Attendance", "Attendance\Attendance.vbproj", "{079E521E-D477-4F7B-8E7E-F6A8766F2673}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|x86 = CD_ROM|x86
+		Debug|x86 = Debug|x86
+		DVD-5|x86 = DVD-5|x86
+		Release|x86 = Release|x86
+		SingleImage|x86 = SingleImage|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.CD_ROM|x86.ActiveCfg = Release|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.CD_ROM|x86.Build.0 = Release|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.Debug|x86.ActiveCfg = Debug|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.Debug|x86.Build.0 = Debug|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.DVD-5|x86.ActiveCfg = Debug|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.DVD-5|x86.Build.0 = Debug|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.Release|x86.ActiveCfg = Release|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.Release|x86.Build.0 = Release|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.SingleImage|x86.ActiveCfg = Release|x86
+		{079E521E-D477-4F7B-8E7E-F6A8766F2673}.SingleImage|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

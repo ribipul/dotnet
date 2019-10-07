@@ -1,0 +1,323 @@
+﻿@model IEnumerable<ACSAdminWeb.Models.LeaveApplication>
+
+@{
+    ViewBag.Title = "Compensatory Leave Application";
+}
+
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.11.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Default.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/ComLeave.js")" type="text/javascript"></script>
+
+<h2 style="text-align: center;">Compensatory Leave Application</h2>
+<script type="text/javascript">
+    function GenericInNewWin() {
+        var oParam = { "EmployeeName": "", "ContactNo": "", "SubDate": "", "Supervisor": "",
+            "EFrom1": "", "EFrom2": "", "EFrom3": "", "EFrom4": "", "ETo1": "", "ETo2": "", "ETo3": "", "ETo4": "",
+            "EDay1": "", "EDay2": "", "EDay3": "", "EDay4": "", "AFrom1": "", "AFrom2": "", "AFrom3": "", "AFrom4": "",
+            "ATo1": "", "ATo2": "", "ATo3": "", "ATo4": "", "ADay1": "", "ADay2": "", "ADay3": "", "ADay4": "",
+            "Training": "", "ITFair": "", "AttendingClient": "", "AttendingOffice": "", "Others": "", "HeadHR": "", "Designation": "", "DepartmentName": "", "AttnType": ""
+        };
+        
+        oParam.EmployeeName = $("#EmployeeName").val();
+        oParam.ContactNo = $("#ContactNo").val();
+        oParam.SubDate = $("#SubDate").val();
+        oParam.Supervisor = $("#Supervisor").val();
+
+        if ($("#EFrom1").val() != "" && $("#ETo1").val() != "") {
+            oParam.EFrom1 = $("#EFrom1").val();
+            oParam.ETo1 = $("#ETo1").val();
+            oParam.EDay1 = $("#EDay1").val();
+        }
+
+        if ($("#EFrom2").val() != "" && $("#ETo2").val() != "") {
+            oParam.EFrom2 = $("#EFrom2").val();
+            oParam.ETo2 = $("#ETo2").val();
+            oParam.EDay2 = $("#EDay2").val();
+        }
+        
+        if ($("#EFrom3").val() != "" && $("#ETo3").val() != "") {
+            oParam.EFrom3 = $("#EFrom3").val();
+            oParam.ETo3 = $("#ETo3").val();
+            oParam.EDay3 = $("#EDay3").val();
+        }
+
+        if ($("#EFrom4").val() != "" && $("#ETo4").val() != "") {
+            oParam.EFrom4 = $("#EFrom4").val();
+            oParam.ETo4 = $("#ETo4").val();
+            oParam.EDay4 = $("#EDay4").val();
+        }
+
+        if ($("#AFrom1").val() != "" && $("#ATo1").val() != "") {
+            oParam.AFrom1 = $("#AFrom1").val();
+            oParam.ATo1 = $("#ATo1").val();
+            oParam.ADay1 = $("#ADay1").val();
+        }
+
+        if ($("#AFrom2").val() != "" && $("#ATo2").val() != "") {
+            oParam.AFrom2 = $("#AFrom2").val();
+            oParam.ATo2 = $("#ATo2").val();
+            oParam.ADay2 = $("#ADay2").val();
+        }
+
+        if ($("#AFrom3").val() != "" && $("#ATo3").val() != "") {
+            oParam.AFrom3 = $("#AFrom3").val();
+            oParam.ATo3 = $("#ATo3").val();
+            oParam.ADay3 = $("#ADay3").val();
+        }
+
+        if ($("#AFrom4").val() != "" && $("#ATo4").val() != "") {
+            oParam.AFrom4 = $("#AFrom4").val();
+            oParam.ATo4 = $("#ATo4").val();
+            oParam.ADay4 = $("#ADay4").val();
+        }
+
+
+        oParam.Training = $("#txtPurpose1").val();
+        oParam.ITFair = $("#txtPurpose2").val();
+        oParam.AttendingClient = $("#txtPurpose3").val();
+        oParam.AttendingOffice = $("#txtPurpose4").val();
+        oParam.Others = $("#txtPurpose5").val().replace("'", "''");
+        
+//        $("#chk1").change(function () {
+//            if (this.checked) {
+//                oParam.Training= $("#txtPurpose1").val();
+//            }
+//        });
+//        $("#chk2").change(function () {
+//            if (this.checked) {
+//                oParam.ITFair = $("#txtPurpose2").val();
+//            }
+//        });
+//        $("#chk3").change(function () {
+//            if (this.checked) {
+//                oParam.AttendingClient = $("#txtPurpose3").val();
+//            }
+//        });
+//        $("#chk4").change(function () {
+//            if (this.checked) {
+//                oParam.AttendingOffice = $("#txtPurpose4").val();
+//            }
+//        });
+//        $("#chk5").change(function () {
+//            if (this.checked) {
+//                oParam.Others = $("#txtPurpose5").val();
+//            }
+//        });
+//        
+        oParam.HeadHR = $("#HeadHR").val();
+        oParam.Designation = $("#Designation").val();
+        oParam.DepartmentName = $("#DepartmentName").val();
+
+        $.ajax({
+            url: 'CompensatoryLeave/ShowGenericRptInNewWin',
+            data: JSON.stringify(oParam),
+            type: 'POST',
+            contentType: 'application/json;',
+            dataType: 'json',
+            success: function () {
+                window.open("GenericReportViewer/ShowGenericLeaveRpt", 'mywindow', 'fullscreen=yes, scrollbars=auto');
+            }
+        });
+    }
+</script>
+<div class='t1' style='width: 650px; margin-left: 130px; margin-right: 130px; background-color:#ffffff;'>
+    <div class='l1'>
+        <div class='r1'>
+            <div class='tl1'>
+                <div class='tr1'> 
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='l1' style='width: 650px; margin-left: 130px; margin-right: 130px; background-color:#ffffff;'>
+    <div class='r1'>
+@using (Html.BeginForm("ShowGenericRptInNewWin", "CompensatoryLeave"))
+{
+    foreach (var item in Model)
+    {
+        <div style="margin-left: 10px; margin-right: 10px;">
+            <table>
+                <tr>
+                    <td width="40%" style="color: rgb(0, 14, 255); font-weight: bold;">Name:</td>
+                    <td width="60%" style="color: rgb(0, 14, 255); font-weight: bold;">
+                        @*<input type="text" name="textfield" id="textfield" />*@
+                        @Html.Hidden("EmployeeName", item.EmployeeName)
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>                                      
+                </tr>
+                <tr>
+                    <td>Contact No:</td>
+                    <td>
+                        @*<input type="text" name="textfield32" id="textfield32" />*@
+                        @Html.Hidden("ContactNo", item.ContactNo)
+                        @Html.DisplayFor(modelItem => item.ContactNo, "ContactNo")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date of Submission:</td>
+                    <td>
+                        @Html.TextBox("SubDate", @DateTime.Now.ToShortDateString(), new { @class = "dtp", style = "width:120px" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Desigtnation:</td>
+                    <td>
+                        @*<input type="text" name="textfield34" id="textfield34" />*@
+                        @Html.Hidden("Designation", item.Designation)
+                        @Html.DisplayFor(modelItem => item.Designation, "Designation")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Department:</td>
+                    <td>
+                        @*<input type="text" name="textfield35" id="textfield35" />*@
+                        @Html.Hidden("DepartmentName", item.DepartmentName)
+                        @Html.DisplayFor(modelItem => item.DepartmentName, "DepartmentName")
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: rgb(138, 0, 209); font-weight: bold;">Departmental Head/Concern:</td>
+                    <td>
+                        @*<input type="text" name="textfield36" id="textfield36" />*@
+                        @Html.TextBox("Supervisor", item.Supervisor, new { @style = "font-weight: bold;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><table width="100%" style="background-color: rgb(255, 248, 255);">
+                                        <tr>
+                                            <td width="40%" style="font-weight: bold; color: Green">Details of Leave Earned:</td>
+                                            <td width="20%" style="text-align: center; font-weight: bold;">From</td>
+                                            <td width="20%" style="text-align: center; font-weight: bold;">To</td>
+                                            <td width="20%" style="text-align: center; font-weight: bold;">No. of days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("EFrom1", "", new { @class = "dtp", style = "width:100px;" })</td>
+                                            <td>@Html.TextBox("ETo1", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("EDay1", "", new { style = "width:100px; disabled: disabled;" })</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("EFrom2", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ETo2", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("EDay2", "", new { style = "width:100px" })</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("EFrom3", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ETo3", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("EDay3", "", new { style = "width:100px" })</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("EFrom4", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ETo4", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("EDay4", "", new { style = "width:100px" })</td>
+                                        </tr>
+                                    </table></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Purpose of which work done:</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table width="100%">
+                            <tr>
+                                <td width="49%">Training Workshop(s):</td>
+                                <td width="3%"><input type="checkbox" name="chk1" id="chk1" /></td>
+                                <td width="48%"><input type="text" name="txtPurpose1" maxlength="30" id="txtPurpose1" /></td>
+                            </tr>
+                            <tr>
+                                <td>IT Fair/Mela:</td>
+                                <td><input type="checkbox" name="chk2" id="chk2" /></td>
+                                <td><input type="text" name="txtPurpose2" maxlength="30" id="txtPurpose2" /></td>
+                            </tr>
+                            <tr>
+                                <td>Attending to Client(s):</td>
+                                <td><input type="checkbox" name="chk3" id="chk3" /></td>
+                                <td><input type="text" name="txtPurpose3" maxlength="30" id="txtPurpose3" /></td>
+                            </tr>
+                            <tr>
+                                <td>Attending office for work of urgent nature:</td>
+                                <td><input type="checkbox" name="chk4" id="chk4" /></td>
+                                <td><input type="text" name="txtPurpose4" maxlength="30" id="txtPurpose4" /></td>
+                            </tr>
+                            <tr>
+                                <td>Other(s) : interchange with GM</td>
+                                <td><input type="checkbox" name="chk5" id="chk5" /></td>
+                                <td><input type="text" name="txtPurpose5" maxlength="30" id="txtPurpose5" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><table width="100%" style="background-color: rgb(255, 248, 255);">
+                                        <tr>
+                                            <td width="40%" style="font-weight: bold; color: Green">Leave to be Availed:</td>
+                                            <td width="20%" style="text-align: center; font-weight: bold;">From</td>
+                                            <td width="20%" style="text-align: center; font-weight: bold;">To</td>
+                                            <td width="20%" style="text-align: center; font-weight: bold;">No. of days</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("AFrom1", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ATo1", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ADay1", "", new { style = "width:100px" })</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("AFrom2", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ATo2", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ADay2", "", new { style = "width:100px" })</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("AFrom3", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ATo3", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ADay3", "", new { style = "width:100px" })</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>@Html.TextBox("AFrom4", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ATo4", "", new { @class = "dtp", style = "width:100px" })</td>
+                                            <td>@Html.TextBox("ADay4", "", new { style = "width:100px" })</td>
+                                        </tr>
+                                    </table></td>
+                </tr>
+                <tr>
+                    <td style="color: rgb(138, 0, 209); font-weight: bold;">Head HR &amp; Admin:</td>
+                    <td>
+                        @*<input type="text" name="textfield31" id="textfield31" />*@
+                        @Html.TextBox("HeadHR", item.HeadHR, new { @style = "font-weight: bold;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><center><input id="gobutton" type="button" value= "Show Preview" onclick="GenericInNewWin()" /></center></td>
+                </tr>
+            </table>
+        </div>
+    }
+}
+        <br/>
+        <div style="margin-left: 10px; margin-right: 10px; text-align: right;">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "button" })</div>
+    </div>
+</div>
+<div class='Footer1' style='width: 650px; margin-left: 130px; margin-right: 130px; background-color:#ffffff;'>
+	<div class='l1'>
+		<div class='r1'>
+			<div class='bl1'>
+				<div class='br1'>
+					&nbsp;
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

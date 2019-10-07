@@ -1,0 +1,6 @@
+﻿@using ACSAdminWeb.Models
+@if(Request.IsAuthenticated) {
+    UserAuthentication userAuth = new UserAuthentication();
+    string EmployeeName = userAuth.GetEmployeeName(@User.Identity.Name);
+    <text><strong>@EmployeeName</strong></text>
+}

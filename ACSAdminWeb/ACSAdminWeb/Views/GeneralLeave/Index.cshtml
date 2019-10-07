@@ -1,0 +1,203 @@
+﻿@*@model ACSAdminWeb.Models.LoadLeave*@
+@using System.Web.UI.WebControls
+@model IEnumerable<ACSAdminWeb.Models.LeaveApplication>
+
+@{
+    ViewBag.Title = "General Leave Application";
+}
+
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.11.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Default.js")" type="text/javascript"></script>
+
+<h2 style="text-align: center;">General Leave Application</h2>
+<script type="text/javascript">
+
+    $(function () {
+        var fDate;
+        var tDate;
+        
+//        $("#SubDate").attr('disabled', 'disabled');
+        $(this).change(function () {
+            fDate = new Date($("#FromDate").val());
+            tDate = new Date($("#ToDate").val());
+            var diff = (tDate.getTime() - fDate.getTime());
+            var day = 1000 * 60 * 60 * 24;
+            var days = Math.round((diff / day)) + 1;
+            
+            if ($("#FromDate").val() != "" && $("#ToDate").val() != "") {
+                $('#txtDays').val(days);
+            }
+            else {
+                $('#txtDays').val("");
+            }
+//            $('#txtDays').val(days);
+        });
+//        $("#ToDate").change(function () {
+//            fDate = new Date($("#FromDate").val($("#Nature").val()));
+//            tDate = new Date($("#ToDate").val());
+//            var diff = (tDate.getTime() - fDate.getTime());
+//            var day = 1000 * 60 * 60 * 24;
+
+//            var days = Math.round((diff / day))+1;
+//            $('#txtDays').val(days);
+//        });
+    });
+    
+    function GenericInNewWin() {
+        var oParam = { "EmployeeName": "", "ContactNo": "", "SubDate": "", "Supervisor": "", "FromDate": "", "ToDate": "", "Days": "", "ResumptionDate": "", "Nature": "", "Purpose": "", "Designation": "", "DepartmentName": "", "AttnType": "" };
+        oParam.EmployeeName = $("#EmployeeName").val();
+        oParam.ContactNo = $("#ContactNo").val();
+        oParam.SubDate = $("#SubDate").val();
+        oParam.Supervisor = $("#Supervisor").val();
+        oParam.FromDate = $("#FromDate").val();
+        oParam.ToDate = $("#ToDate").val();
+        oParam.Days = $("#txtDays").val();
+        oParam.ResumptionDate = $("#txtResumptionDate").val();
+        oParam.Nature = $("#Nature").val();
+        oParam.Purpose = cleanUp($("#txtPurpose").val());
+        oParam.Designation = $("#Designation").val();
+        oParam.DepartmentName = $("#DepartmentName").val();
+        
+        $.ajax({
+            url: 'GeneralLeave/ShowGenericRptInNewWin',
+            data: JSON.stringify(oParam),
+            type: 'POST',
+            contentType: 'application/json;',
+            dataType: 'json',
+            success: function () {
+                window.open("GenericReportViewer/ShowGenericLeaveRpt", 'mywindow', 'fullscreen=yes, scrollbars=auto');
+            }
+        });
+    }
+
+</script>
+<div class='t1' style='width: 550px; margin-left: 170px; margin-right: 170px; background-color:#ffffff;'>
+    <div class='l1'>
+        <div class='r1'>
+            <div class='tl1'>
+                <div class='tr1'> 
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='l1' style='width: 550px; margin-left: 170px; margin-right: 170px; background-color:#ffffff;'>
+    <div class='r1'>
+        @using (Html.BeginForm("ShowGenericRptInNewWin", "GeneralLeave"))
+        {
+            foreach (var item in Model)
+            {
+                @Html.Hidden("Designation", item.Designation)
+                @Html.Hidden("DepartmentName", item.DepartmentName)
+                <div style="margin-left: 10px; margin-right: 10px;">
+                    <table>
+                        <tr>
+                            <td width="33%" style="color: rgb(0, 14, 255); font-weight: bold;">Name</td>
+                            @*<td width="62%"><input type="text" id="txtName" name="txtName" readonly="readonly" /></td>*@  
+                            <td width="62%" style="color: rgb(0, 14, 255); font-weight: bold;">
+                                @Html.Hidden("EmployeeName", item.EmployeeName)
+                                @Html.DisplayFor(modelItem => item.EmployeeName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Contact No</td>
+                            <td>
+                                @Html.Hidden("ContactNo", item.ContactNo)
+                                @Html.DisplayFor(modelItem => item.ContactNo, "ContactNo")
+                                @*<input type="text" id="txtContactNo" name="txtContactNo" />*@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date of Submission</td>
+                            <td>
+                                @Html.TextBox("SubDate", @DateTime.Now.ToShortDateString(), new { @class = "dtp", style = "width:120px" })
+                                @*<input type="text" id="txtSubDate" name="txtSubDate" value="@DateTime.Now.ToShortDateString()" class="dtp" />*@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color: rgb(138, 0, 209); font-weight: bold;">Supervisor's Designation</td>
+                            <td>
+                                @Html.TextBox("Supervisor", item.Supervisor, new { @style = "font-weight: bold;" })
+                                @*<input type="text" id="txtSupervisor" name="txtSupervisor" />*@
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table width="100%">
+                                    <tr>
+                                        <td>From</td>
+                                        <td>
+                                            @Html.TextBox("FromDate", @DateTime.Now.ToShortDateString(), new { @class = "dtp", style = "width:120px;" })
+                                            @*<input type="text" id="txtFromDate" name="txtFromDate" value="@DateTime.Now.ToShortDateString()" class="dtp" />*@
+                                        </td>
+                                        <td>To</td>
+                                        <td>
+                                            @Html.TextBox("ToDate", @DateTime.Now.ToShortDateString(), new { @class = "dtp", style = "width:120px;" })
+                                            @*<input type="text" id="txtToDate" name="txtToDate" value="@DateTime.Now.ToShortDateString()" class="dtp"/>*@
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table width="100%">
+                                    <tr>
+                                        <td>Duration (No of Days):</td>
+                                        <td><input type="text" id="txtDays" name="txtDays" value="1" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Resumption of duties:</td>
+                                        <td><input type="text" id="txtResumptionDate" name="txtResumptionDate" value="@DateTime.Now.ToShortDateString()" class="dtp" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nature of Leave:</td>
+                                        @{
+                var listItems = new List<ListItem> 
+                                            { 
+                                                  new ListItem { Text = "Casual Leave", Value = "0" }, 
+                                                  new ListItem { Text = "Sick Leave", Value = "1" },
+                                                  new ListItem { Text = "Earned Leave", Value = "2" }, 
+                                                  new ListItem { Text = "Leave Without Pay", Value = "3" }, 
+                                                  new ListItem { Text = "Special Leave", Value = "4" }  
+                                            };
+                                        }
+                                        <td>@Html.DropDownList("Nature", new SelectList(listItems))</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Purpose of the leave:</td>
+                                        <td><textarea id="txtPurpose" name="txtPurpose" cols="30"  rows="3"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><center><input id="gobutton" type="button" value= "Show Preview" onclick="GenericInNewWin()" /></center></td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        }
+        <br/>
+        <div style="margin-left: 10px; margin-right: 10px; text-align: right;">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "button" })</div>
+    </div>
+</div>
+<div class='Footer1' style='width: 550px; margin-left: 170px; margin-right: 170px; background-color:#ffffff;'>
+	<div class='l1'>
+		<div class='r1'>
+			<div class='bl1'>
+				<div class='br1'>
+					&nbsp;
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
