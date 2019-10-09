@@ -1,0 +1,25 @@
+ALTER PROCEDURE [dbo].[USP_LOAD_RECORDS]
+(
+	@Path AS VARCHAR(200)
+)
+AS
+
+BEGIN
+	--DECLARE @Path	As	varchar	(200)
+	DECLARE	@STR	As	varchar	(500)
+
+	--SET @Path = '\\Serverbdj\Attendance soft\ACS txt\2012- 4-6.txt'
+	DELETE TMPInformation
+
+	SET @STR = ''
+	SET @STR = 'BULK INSERT TMPInformation FROM ' + '''' + @Path + '''' + ' WITH (FIELDTERMINATOR = '':'')'
+	
+	SET NOCOUNT ON
+	--PRINT @STR
+	EXEC (@STR)
+	DELETE FROM TMPInformation
+	WHERE CardNo = '[Master]'
+	SELECT SN+':'+CardNo+':'+AttnDate+':'+AttnTime+':'+CAST(Status As varchar(1)) As Records FROM TMPInformation ORDER BY SN
+
+	SET NOCOUNT OFF
+END

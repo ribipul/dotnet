@@ -1,0 +1,20 @@
+select * from Journal 
+where id in (877234,877236)
+
+select * from Sales
+where tno = 98123
+
+
+select * from Users
+where UserID = 66
+
+
+select * from Company
+where id = 13273
+
+select * from InvoiceList
+where Invoice_No = '1501-00037-001-82604'
+
+
+select * from invoiceSceduler
+where TNO = 98123

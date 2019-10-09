@@ -1,0 +1,77 @@
+ALTER PROCEDURE [dbo].[USP_TRANSFER_RECORDS]
+
+AS
+
+--DECLARE	@SN			As	varchar	(10),
+--		@CardNo		As	varchar	(100),
+--		@AttnDate	As	varchar (20),
+--		@AttnTime	As	varchar	(20),
+--		@Status		As	bit			,
+--		@PersonalID	As	int			,
+DECLARE		@TotalRow	As	int
+--DECLARE	@CUR_INOUT CURSOR
+
+--IF CURSOR_STATUS('local','@CUR_INOUT')=1
+--	BEGIN
+--		CLOSE  @CUR_INOUT
+--		DEALLOCATE @CUR_INOUT
+--	END
+
+--SET @CUR_INOUT = CURSOR STATIC FOR
+--SELECT SN, CardNo, AttnDate, AttnTime, Status FROM TMPInformation ORDER BY SN
+--OPEN @CUR_INOUT
+
+DECLARE @AttnInfo TABLE(
+		ID			int PRIMARY KEY IDENTITY,
+		PersonalID	int				NULL,
+		CardNo		varchar (20)	NULL,
+		AttnDate	smalldatetime	NULL,
+		AttnTime	time	(7)		NULL,
+		Status		bit				NULL,
+		Record		varchar	(50)	NULL,
+		ManualEntry	bit				NULL
+)
+INSERT @AttnInfo
+SELECT P.pId, TI.CardNo, CAST(TI.AttnDate As smalldatetime) As AttnDate, 
+CAST(SUBSTRING(TI.AttnTime,1,2)+':'+SUBSTRING(TI.AttnTime,3,2)+':00' As time(7)) As AttnTime, TI.Status, TI.SN+':'+TI.CardNo+':'+TI.AttnDate+':'+TI.AttnTime+':'+CAST(TI.Status As varchar(1)) As Record, 0 As ManualEntry
+FROM TMPInformation TI INNER JOIN Personal P ON TI.CardNo = P.CardNo
+WHERE P.empActive = 1
+ORDER BY P.pId
+
+--SET @PersonalID = 0
+
+--FETCH @CUR_INOUT INTO @SN, @CardNo, @AttnDate, @AttnTime, @Status
+--WHILE @@FETCH_STATUS = 0
+--	BEGIN
+--		SET @PersonalID = (SELECT pId FROM Personal WHERE CardNo = @CardNo)
+--		IF @PersonalID > 0
+--			BEGIN
+--				INSERT INTO @AttnInfo(PersonalID, CardNo, AttnDate, AttnTime, Status, Record, ManualEntry)
+--				VALUES (@PersonalID, @CardNo, CAST(@AttnDate As date), CAST(SUBSTRING(@AttnTime,1,2)+':'+SUBSTRING(@AttnTime,3,2)+':00' As time(7)), @Status, @SN+':'+@CardNo+':'+@AttnDate+':'+@AttnTime+':'+CAST(@Status As varchar(1)), 0)
+--				SET @PersonalID = 0
+--			END
+--		FETCH @CUR_INOUT INTO @SN, @CardNo, @AttnDate, @AttnTime, @Status
+--	END
+
+DECLARE @StartDate	AS	smalldatetime,
+		@EndDate	AS	smalldatetime
+		
+SET @StartDate = (SELECT MIN(AttnDate) FROM @AttnInfo)
+SET @EndDate = (SELECT MAX(AttnDate) FROM @AttnInfo)
+
+DELETE Information WHERE (edate BETWEEN @StartDate AND @EndDate) And record IN (SELECT Record FROM @AttnInfo) AND manualEntry = 0
+
+INSERT Information
+SELECT PersonalID, AttnDate, AttnTime, Status , Record, ManualEntry
+FROM @AttnInfo
+ORDER BY PersonalID, AttnDate, AttnTime, ID
+--INSERT Information
+--SELECT a.PersonalID, a.AttnDate, a.AttnTime, a.Status, a.Record, a.ManualEntry
+--FROM @AttnInfo a left join Information i on a.Record=i.record and i.edate BETWEEN @StartDate AND @EndDate AND i.manualEntry = 0
+--WHERE i.SN is null
+--ORDER BY a.PersonalID, a.AttnDate, a.AttnTime, a.ID
+
+SET @TotalRow = @@ROWCOUNT
+DELETE RecordCount
+INSERT INTO RecordCount(TotalRow)
+VALUES (@TotalRow)
